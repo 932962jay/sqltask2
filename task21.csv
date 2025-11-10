@@ -1,0 +1,114 @@
+create table  haldiram(
+product_snumber serial not null,
+product_name  varchar,
+manufacturing_date bigint,
+unit_manufactur int default null,
+product_id bigint primary key
+);
+select * from haldiram
+where product_name = 'gulab jamun'
+
+update haldiram set product_name = 'gulab jamun' 
+where product_snumber = 22 or product_snumber = 11 or product_snumber = 33 or product_snumber = 44 or  product_snumber = 55 
+or product_snumber = 66 or product_snumber = 77 or product_snumber = 88 or product_snumber = 99;
+
+
+
+drop table takatak
+
+create table takatak(
+sno serial,
+flavour varchar default 'tamato tangy',
+date_of_manufacturing varchar not null,
+unit_price int,
+product_id bigint,
+FOREIGN key(product_id)
+REFERENCES haldiram(product_id)
+);
+
+select * from takatak
+
+select * h.unit_manufactur,t.flavour,t.unit_price from haldiram as h
+inner join takatak as t
+on h.product_id =t.product_id
+where t.flavour in ('spicy chilli','tamato tnagy')
+group by h.unit_manufactur,t.flavour,t.unit_price
+having(unit_price) in(42,45,63,35,40)
+order by unit_price asc
+
+
+create table halkefulke(
+sno serial,
+flavour varchar default 'salty',
+date_of_manufacturing bigint not null,
+unit_price int,
+product_id bigint,
+FOREIGN key(product_id)
+REFERENCES haldiram(product_id)
+);
+select * from halkefulke
+
+select  h.unit_manufactur,f.flavour,f.unit_price from haldiram as h
+left join halkefulke as f
+on h.product_id =f.product_id
+where f.flavour in ('salty','ketchup blast')
+group by h.unit_manufactur,f.flavour,f.unit_price
+having(unit_price) in(20,22,24,26,18,30,54)
+order by unit_price  asc
+
+create table sev(
+sno serial,
+flavour varchar default 'bujiya sav',
+date_of_manufacturing bigint not null,
+unit_price int,
+product_id bigint,
+FOREIGN key(product_id)
+REFERENCES haldiram(product_id)
+);
+select* from sev
+
+select  h.unit_manufactur,v.flavour,v.unit_price  from haldiram as h
+right join sev as v
+on h.product_id = v.product_id
+where v. unit_price in(93,45,63,55)
+group by h.unit_manufactur,v.flavour,v.unit_price
+having(unit_price)in(45,63,55)
+order by unit_price  desc
+
+create table salted_peanuts(
+sno serial,
+salt_amount_mg numeric(5,2),
+date_of_manufacturing bigint not null,
+unit_price int,
+product_id bigint,
+FOREIGN key(product_id)
+REFERENCES haldiram(product_id)
+);
+select * from salted_peanuts
+
+select  h.unit_manufactur,p.salt_amount_mg,p.unit_price from haldiram as h
+right join salted_peanuts as p
+on h.product_id = p.product_id
+where p.salt_amount_mg >143.11 and p.salt_amount_mg <200
+group by h.unit_manufactur,p.salt_amount_mg,p.unit_price
+having(unit_price)in(20,22,24,26,28,30,31)
+order by unit_price  desc
+
+create table gulab_jamun(
+sno serial,
+best_before_date bigint not null,
+date_of_manufacturing bigint not null,
+unit_price int,
+product_id bigint,
+FOREIGN key(product_id)
+REFERENCES haldiram(product_id)
+);
+select * from gulab_jamun
+
+select  h.unit_manufactur,g.best_before_date,g.unit_price from haldiram as h
+full outer join gulab_jamun as g
+on h.product_id = g.product_id
+where best_before_date >1761247429 and best_before_date <17612474555
+group by h.unit_manufactur,g.best_before_date,g.unit_price
+having(unit_price)in(100,110,120,130,140,150,135,125,135)
+order by unit_price  desc
